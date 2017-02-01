@@ -29,6 +29,7 @@ BRANCH_COLOR="\e[1;37m"
 BRANCH_SYMBOL="\e[0;36m"→${SYMBOL_SPACE}$R
 UPSTREAM_COLOR="\e[1;37m"
 
+
 function ginfo(){
 printf "\n${TITLE_COLOR}Git Prompt v1.0.0$R
   Author: Jan Haensli
@@ -99,14 +100,18 @@ function parse_git_status() {
 
 
 function git_prompt() {
+    if [ ".git" == "${PWD##*/}" ]; then 
+		return;
+    fi
     git rev-parse --git-dir > /dev/null 2>&1
     if [ $? -eq 0 ]; then
         gitPrompt="$(parse_git_status)"
-	printf "%s\n" "${gitPrompt}"
+	printf "%s$R\n" "${gitPrompt}"
     else
         gitPrompt=""
     fi
     #printf "%s\n" "${gitPrompt}"
 }
 
-#PROMPT_COMMAND=git_prompt
+git_prompt
+
