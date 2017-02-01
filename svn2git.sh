@@ -43,8 +43,8 @@ git for-each-ref --format='%(refname)' refs/heads/tags | cut -d / -f 4 | while r
 
 printf '\e[1;32m%s\e[m\n' "Finished!"
 printf "You can now do\n"
-printf " git config user.name \"Jan Haensli\"\n"
-printf " git config user.email \"jan@haens.li\"\n"
+printf " git config user.name \"[Firstname Lastname]\"\n"
+printf " git config user.email \"[email]\"\n"
 printf " git remote add origin [URL]\n"
 printf " git push -u origin master\n\n"
 
