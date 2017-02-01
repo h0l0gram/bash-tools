@@ -109,4 +109,4 @@ function git_prompt() {
     #printf "%s\n" "${gitPrompt}"
 }
 
-PROMPT_COMMAND=git_prompt
+#PROMPT_COMMAND=git_prompt
