@@ -31,7 +31,7 @@ UPSTREAM_COLOR="\e[1;37m"
 
 
 function ginfo(){
-printf "\n${TITLE_COLOR}Git Prompt v1.0.0$R
+printf "\n${TITLE_COLOR}Git Prompt v1.0.1$R
   Author: Jan Haensli
   https://github.com/h0l0gram/bash-tools
 
