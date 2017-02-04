@@ -65,12 +65,12 @@ function parse_git_status() {
     fi
 
     if [[ ${git_status} =~ ${AHEAD_PATTERN} ]]; then
-	upstream=${BASH_REMATCH[1]}
+        upstream=${BASH_REMATCH[1]}
         ahead= ${AHEAD_COLOR}${AHEAD_SYMBOL}${BASH_REMATCH[2]}
 	fi
 
     if [[ ${git_status} =~ ${BEHIND_PATTERN} ]]; then
-	upstream=${BASH_REMATCH[1]}
+        upstream=${BASH_REMATCH[1]}
         behind= ${BEHIND_COLOR}${BEHIND_SYMBOL}${BASH_REMATCH[2]}
     fi
     if [[ ${git_status} =~ ${DIVERGE_PATTERN} ]]; then
@@ -97,21 +97,16 @@ function parse_git_status() {
     echo -e "${BRANCH_COLOR}($branch)${BRANCH_SYMBOL}${UPSTREAM_COLOR}($upstream)$ahead$behind$uptodate$staged$dirty$untracked"
 }
 
-
-
 function git_prompt() {
-    if [ ".git" == "${PWD##*/}" ]; then 
-		return;
+    worktree=`git rev-parse --is-inside-work-tree 2>&1`
+    if [ $? -ne 0 ]; then
+         return;
     fi
-    git rev-parse --git-dir > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        gitPrompt="$(parse_git_status)"
-	printf "%s$R\n" "${gitPrompt}"
-    else
-        gitPrompt=""
+    if [[ "false" == "$worktree" ]]; then
+        return;
     fi
-    #printf "%s\n" "${gitPrompt}"
+    gitPrompt="$(parse_git_status)"
+    printf "%s$R\n" "${gitPrompt}"
 }
 
 git_prompt
-
