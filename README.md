@@ -9,12 +9,12 @@
 
 ![git prompt info](https://h0l0gram.github.io/bash-tools/img/ginfo.png)
 
-##Quick Install
+## Quick Install
     git clone https://github.com/h0l0gram/bash-tools ~/bash-tools
     echo -e "\n\nsource ~/bash-tools/git-prompt.sh\nPROMPT_COMMAND=git_prompt" >> ~/.bashrc
     source ~/.bashrc
 
-##Update
+## Update
     cd ~/bash-tools 
     git pull
     source ~/.bashrc
