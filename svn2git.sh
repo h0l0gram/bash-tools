@@ -1,4 +1,10 @@
 #!/bin/bash
+
+function logexit {
+	printf '\e[0;31m\n\n%s failed\n\e[m\n' "$1"
+	exit 1
+}
+
 printf "\e[0;34m\n%s\n==========\n\n\e[m" "GIT TO SVN"
 
 
@@ -8,16 +14,19 @@ TITLE='\e[1;33m\n%s\n-----------------------\e[m\n'
 
 
 #clone
-printf $TITLE "Cloning svn"
-git svn clone ${URL} --no-metadata -A ~/authors-transform.txt --stdlayout temp
+NOW="Cloning svn"
+printf $TITLE $NOW 
+git svn clone ${URL} --no-metadata -A ~/authors-transform.txt --stdlayout temp || logexit $NOW
+#git svn clone ${URL} -A ~/authors-transform.txt --stdlayout temp
+#git svn clone ${URL} --no-metadata -A ~/authors-transform.txt temp || logexit $NOW
 
 #gitignore
-printf $TITLE "Create gitignore from svn-ignore"
-cd temp
-git svn show-ignore > .gitignore
-git add .gitignore
-git commit -m 'Convert svn:ignore properties to .gitignore.'
-cd ..
+#printf $TITLE "Create gitignore from svn-ignore"
+#cd temp
+#git svn show-ignore > .gitignore
+#git add .gitignore
+#git commit -m 'Convert svn:ignore properties to .gitignore.'
+#cd ..
 
 #init bare
 printf $TITLE "init bare repo"
@@ -31,6 +40,7 @@ cd ../temp
 git remote add bare ../bare.git
 git config remote.bare.push 'refs/remotes/*:refs/heads/*'
 git push bare
+git push bare master:trunk
 cd ../bare.git/
 
 #trunk -> master
@@ -46,7 +56,8 @@ printf "You can now do\n"
 printf " git config user.name \"[Firstname Lastname]\"\n"
 printf " git config user.email \"[email]\"\n"
 printf " git remote add origin [URL]\n"
-printf " git push -u origin master\n\n"
+printf " git push -u origin master\n"
+printf " git push --mirror\n\n"
 
 
 
