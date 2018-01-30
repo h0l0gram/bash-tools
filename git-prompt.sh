@@ -28,10 +28,12 @@ DIRTY_COLOR="\e[0;35m"
 BRANCH_COLOR="\e[1;37m"
 BRANCH_SYMBOL="\e[0;36m"→${SYMBOL_SPACE}$R
 UPSTREAM_COLOR="\e[1;37m"
+STASHED_SYMBOL="⚒${SYMBOL_SPACE}"
+STASHED_COLOR="\e[0;36m"
 
 
 function ginfo(){
-printf "\n${TITLE_COLOR}Git Prompt v1.0.1$R
+printf "\n${TITLE_COLOR}Git Prompt v1.1.0$R
   Author: Jan Haensli
   https://github.com/h0l0gram/bash-tools
 
@@ -42,6 +44,7 @@ Symbols:
   ${STAGED_COLOR}${STAGED_SYMBOL}: staged files
   ${DIRTY_COLOR}${DIRTY_SYMBOL}: modified files (unstaged)
   ${UNTRACKED_COLOR}${UNTRACKED_SYMBOL}: untracked files
+  ${STASHED_COLOR}${STASHED_SYMBOL}: stashed entries
 "
 }
 
@@ -59,6 +62,7 @@ function parse_git_status() {
 	git_dirty="$(git diff --numstat | wc -l)"
 	git_staged="$(git diff --cached --numstat | wc -l)"
 	git_status="$(git status 2> /dev/null)"
+        stash="$(git stash list | wc -l)"
 
     if [[ ${git_status} =~ ${BRANCH_PATTERN} ]]; then
         branch=${BRANCH_COLOR}${BASH_REMATCH[1]}
@@ -93,8 +97,11 @@ function parse_git_status() {
     if [[ $UNTRACKED_PATTERN -gt 0 ]]; then
         untracked= ${UNTRACKED_COLOR}${UNTRACKED_SYMBOL}$UNTRACKED_PATTERN
     fi
+    if [[ $stash -gt 0 ]]; then
+        stash_count=" ${STASHED_COLOR}${STASHED_SYMBOL}$stash"
+    fi
 
-    echo -e "${BRANCH_COLOR}($branch)${BRANCH_SYMBOL}${UPSTREAM_COLOR}($upstream)$ahead$behind$uptodate$staged$dirty$untracked"
+    echo -e "${BRANCH_COLOR}($branch)${BRANCH_SYMBOL}${UPSTREAM_COLOR}($upstream)$ahead$behind$uptodate$staged$dirty$untracked$stash_count"
 }
 
 function git_prompt() {
