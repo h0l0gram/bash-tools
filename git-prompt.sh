@@ -49,17 +49,17 @@ function parse_git_status() {
 	DIVERGE_PATTERN="Your branch and '(.*)' have diverged,"
 	DIVERGE_PATTERN2="and have ([0-9]+) and ([0-9]+)"
 	BRANCH_PATTERN="^On branch ([^${IFS}]*)"
-	DIRTY_PATTERN=`git diff --numstat | wc -l`
-	STAGED_PATTERN=`git diff --cached --numstat | wc -l`
+	DIRTY_PATTERN=`git diff --numstat | wc -l | tr -d '[:space:]'`
+	STAGED_PATTERN=`git diff --cached --numstat | wc -l | tr -d '[:space:]'`
 	AHEAD_PATTERN="ahead of '(.*)'.* ([0-9]+) commit"
 	BEHIND_PATTERN="behind '(.*)'.* ([0-9]+) commit"
-	UNTRACKED_PATTERN=`git status -u -s | grep ^?? | wc -l`
+	UNTRACKED_PATTERN=`git status -u -s | grep ^?? | wc -l | tr -d '[:space:]'`
 	UPTODATE_PATTERN="up-to-date with '(.*)'"
 
-	git_dirty="$(git diff --numstat | wc -l)"
-	git_staged="$(git diff --cached --numstat | wc -l)"
+	git_dirty="$(git diff --numstat | wc -l | tr -d '[:space:]')"
+	git_staged="$(git diff --cached --numstat | wc -l | tr -d '[:space:]')"
 	git_status="$(git status 2> /dev/null)"
-        stash="$(git stash list | wc -l)"
+        stash="$(git stash list | wc -l | tr -d '[:space:]')"
 
     if [[ ${git_status} =~ ${BRANCH_PATTERN} ]]; then
         branch=${BRANCH_COLOR}${BASH_REMATCH[1]}
