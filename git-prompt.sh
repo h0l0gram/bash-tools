@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #Git prompt
-#Author: Jan Hänsli jan@haens.li
+#Author: Jan Hänsli
 #Makes you a nice git prompt when in a git repository
 #
 #call "ginfo" for symbol explanation
@@ -30,7 +30,7 @@ STASHED_COLOR="\033[0;36m"
 
 
 function ginfo(){
-printf "\n${TITLE_COLOR}Git Prompt v1.1.0$R
+printf "\n${TITLE_COLOR}Git Prompt v1.1.1$R
   Author: Jan Haensli
   https://github.com/h0l0gram/bash-tools
 
