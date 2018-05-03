@@ -10,14 +10,30 @@
 ![git prompt info](https://h0l0gram.github.io/bash-tools/img/ginfo.png)
 
 ## Quick Install
+
+### Linux
     git clone https://github.com/h0l0gram/bash-tools ~/bash-tools
-    echo -e "\n\nsource ~/bash-tools/git-prompt.sh\nPROMPT_COMMAND=git_prompt" >> ~/.bashrc
+    echo -e "\n\n#added by bash-tools\nsource ~/bash-tools/git-prompt.sh\nPROMPT_COMMAND=git_prompt" >> ~/.bashrc
     source ~/.bashrc
+
+### OSX
+    git clone https://github.com/h0l0gram/bash-tools ~/bash-tools
+    echo -e "\n\n#added by bash-tools\nsource ~/bash-tools/git-prompt.sh\nPROMPT_COMMAND=git_prompt" >> ~/.bash_profile
+    source ~/.bash_profile
 
 ## Update
     cd ~/bash-tools 
     git pull
     source ~/.bashrc
+    
+## Uninstall
+
+### Linux
+ remove the 3 lines added by bash-tools in ~/.bashrc
+
+### OSX
+ remove the 3 lines added by bash-tools in ~/.bash_profile
+    rm -r ~/bash-tools
 
 ## Requirements
 - Bash
