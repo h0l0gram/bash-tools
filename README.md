@@ -29,11 +29,14 @@
 ## Uninstall
 
 ### Linux
- remove the 3 lines added by bash-tools in ~/.bashrc
+remove the 3 lines added by bash-tools in `~/.bashrc`
+
+```rm -r ~/bash-tools```
 
 ### OSX
- remove the 3 lines added by bash-tools in ~/.bash_profile
-    rm -r ~/bash-tools
+remove the 3 lines added by bash-tools in `~/.bash_profile`
+
+```rm -r ~/bash-tools```
 
 ## Requirements
 - Bash
