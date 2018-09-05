@@ -27,21 +27,22 @@ BRANCH_SYMBOL="\033[0;36m"→${SYMBOL_SPACE}$R
 UPSTREAM_COLOR="\033[1;37m"
 STASHED_SYMBOL="⚒${SYMBOL_SPACE}"
 STASHED_COLOR="\033[0;36m"
-
+TAG_COLOR="\033[37;48;5;17m"
 
 function ginfo(){
-printf "\n${TITLE_COLOR}Git Prompt v1.1.1$R
+printf "\n${TITLE_COLOR}Git Prompt v1.2.0$R
   Author: Jan Haensli
   https://github.com/h0l0gram/bash-tools
 
 Symbols:
-  ${AHEAD_COLOR}${AHEAD_SYMBOL}: commits ahead
-  ${BEHIND_COLOR}${BEHIND_SYMBOL}: commits behind
-  ${UPTODATE_COLOR}${UPTODATE_SYMBOL}: up to date
-  ${STAGED_COLOR}${STAGED_SYMBOL}: staged files
-  ${DIRTY_COLOR}${DIRTY_SYMBOL}: modified files (unstaged)
-  ${UNTRACKED_COLOR}${UNTRACKED_SYMBOL}: untracked files
-  ${STASHED_COLOR}${STASHED_SYMBOL}: stashed entries
+  ${AHEAD_COLOR}${AHEAD_SYMBOL}  : commits ahead
+  ${BEHIND_COLOR}${BEHIND_SYMBOL}  : commits behind
+  ${UPTODATE_COLOR}${UPTODATE_SYMBOL}  : up to date
+  ${STAGED_COLOR}${STAGED_SYMBOL}  : staged files
+  ${DIRTY_COLOR}${DIRTY_SYMBOL}  : modified files (unstaged)
+  ${UNTRACKED_COLOR}${UNTRACKED_SYMBOL}  : untracked files
+  ${STASHED_COLOR}${STASHED_SYMBOL}  : stashed entries
+  ${TAG_COLOR}1.0$R : tags
 "
 }
 
@@ -54,12 +55,13 @@ function parse_git_status() {
 	AHEAD_PATTERN="ahead of '(.*)'.* ([0-9]+) commit"
 	BEHIND_PATTERN="behind '(.*)'.* ([0-9]+) commit"
 	UNTRACKED_PATTERN=`git status -u -s | grep ^?? | wc -l | tr -d '[:space:]'`
-	UPTODATE_PATTERN="up-to-date with '(.*)'"
+	UPTODATE_PATTERN="up(-| )to(-| )date with '(.*)'"
 
 	git_dirty="$(git diff --numstat | wc -l | tr -d '[:space:]')"
 	git_staged="$(git diff --cached --numstat | wc -l | tr -d '[:space:]')"
 	git_status="$(git status 2> /dev/null)"
         stash="$(git stash list | wc -l | tr -d '[:space:]')"
+	git_tags="$(for tag in `git tag --points-at HEAD`; do echo -e -n "$TAG_COLOR$tag$R  "; done)"
 
     if [[ ${git_status} =~ ${BRANCH_PATTERN} ]]; then
         branch=${BRANCH_COLOR}${BASH_REMATCH[1]}
@@ -82,7 +84,7 @@ function parse_git_status() {
         fi
     fi
     if [[ ${git_status} =~ ${UPTODATE_PATTERN} ]]; then
-	upstream=${BASH_REMATCH[1]}
+	upstream=${BASH_REMATCH[3]}
 	uptodate="${UPTODATE_COLOR}${UPTODATE_SYMBOL} "
     fi
     if [[ $DIRTY_PATTERN -gt 0 ]]; then
@@ -98,7 +100,7 @@ function parse_git_status() {
         stash_count=" ${STASHED_COLOR}${STASHED_SYMBOL}$stash"
     fi
 
-    echo -e "${BRANCH_COLOR}($branch)${BRANCH_SYMBOL}${UPSTREAM_COLOR}($upstream)$ahead$behind$uptodate$staged$dirty$untracked$stash_count"
+    echo -e "${BRANCH_COLOR}($branch)${BRANCH_SYMBOL}${UPSTREAM_COLOR}($upstream)$ahead$behind$uptodate$staged$dirty$untracked$stash_count    $git_tags"
 }
 
 function git_prompt() {
